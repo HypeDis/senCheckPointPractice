@@ -1,68 +1,33 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## React Boiler Two
 
-## Available Scripts
+This was originally built in class as part of a demo. It has been polished since. It isn't really anything special. We were attempting to avoid writing a webpack config, and keeping the babel very minimal. So this boiler has even less fancy JS available then the previous one.
 
-In the project directory, you can run:
+### Folder Structure
 
-### `npm start`
+Client and Server are separated into directories. Things tend to be well organized. Redux could be better organized but it feels premature at this point.
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### .env
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+As we head closer to deploying these apps to the real internet, we need to hide some information that is private to us. We can do this by injecting data in the environment. When we deploy to certain environments, it will be able to inject it on its own. Sometimes we need to inject it manually. Either way, in development on our own machines we should get used to this. So here the expectation is that we will write a .env file that specifies these pieces of data.
 
-### `npm test`
+`.env` in the root directory of your project:
+```dotenv
+DO_SEED=true
+FORCE_DB_REFRESH=true
+PORT=3000
+DB_NAME=boiler
+```
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+These things should be set accordingly. Obviously, "boiler" is not a good name for a DB. Set it to an appropriate name and then create that DB on your local machine.
 
-### `npm run build`
+### Usage
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- `start:client`: Start client in watch mode for development.
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+- `start:server`: Start server with nodemon in watch mode.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- `dev`: Start both client and server being watched in development.
 
-### `npm run eject`
+- `start`: **PRODUCTION COMMAND - builds the client for production, and starts a normal node server to run it. Not hot. Not for local development.**
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
