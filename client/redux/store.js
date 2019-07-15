@@ -1,52 +1,71 @@
 import { createStore, applyMiddleware } from 'redux';
-import actions from './actions';
+import thunk from 'redux-thunk';
+import logger from 'redux-logger';
+import axios from 'axios';
 
-const {
-  types: { INCREMENT, SET_HEALTH, SET_COUNT },
-} = actions;
+//action constants
+const GOT_USERS_FROM_DB = 'GOT_USERS_FROM_DB';
+const GOT_USER_AND_PROFILE_FROM_DB = 'GOT_USER_AND_PROFILE_FROM_DB';
 
-const initialState = {
-  count: 0,
-  health: '',
+// action creators
+export const gotUsersFromDb = users => {
+  const action = { type: GOT_USERS_FROM_DB, users };
+  return action;
 };
 
-const rootReducer = (state = initialState, action) => {
+export const gotUserAndProfileFromDb = userProfile => {
+  const action = { type: GOT_USER_AND_PROFILE_FROM_DB, userProfile };
+  return action;
+};
+
+// thunk creators
+export const getUsersFromDb = () => {
+  return dispatch => {
+    return axios
+      .get('/api/users')
+      .then(response => {
+        console.log('get users resonse', response.data);
+        dispatch(gotUsersFromDb(response.data));
+      })
+      .catch(e => console.error(e));
+  };
+};
+
+export const getUserProfileFromDb = userId => {
+  return dispatch => {
+    return axios
+      .get(`/api/profiles/${userId}`)
+      .then(response => {
+        dispatch(gotUserAndProfileFromDb(response.data));
+      })
+      .catch(e => console.error('user profile error', e));
+  };
+};
+
+const initialState = {
+  users: [],
+  selectedUser: {
+    user: {
+      username: '',
+      email: '',
+    },
+    firstName: '',
+    lastName: '',
+    birthday: '',
+  },
+};
+
+const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case INCREMENT:
-      return {
-        ...state,
-        count: state.count + 1,
-      };
-    case SET_HEALTH:
-      return {
-        ...state,
-        health: action.data,
-      };
-    case SET_COUNT:
-      return {
-        ...state,
-        count: action.count,
-      };
+    case GOT_USERS_FROM_DB:
+      return { ...state, users: action.users };
+    case GOT_USER_AND_PROFILE_FROM_DB:
+      return { ...state, selectedUser: action.userProfile };
     default:
       return state;
   }
 };
 
-const loggingMiddleware = store => next => action => {
-  console.log('Current State: ', store.getState());
-  const nextState = next(action);
-  console.log('Next State: ', store.getState());
-  return nextState;
-};
-
-const reduxThunk = store => next => action => {
-  if (typeof action === 'function') {
-    action(store.dispatch, store.getState);
-  } else {
-    return next(action);
-  }
-};
-
-const store = createStore(rootReducer, applyMiddleware(loggingMiddleware, reduxThunk));
+const store = createStore(reducer, applyMiddleware(logger, thunk));
 
 export default store;

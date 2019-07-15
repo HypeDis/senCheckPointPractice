@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import redux from './redux';
+import store from './redux/store';
 import Router from './router';
 
-const { store } = redux;
+// const { store } = redux;
 
 const appDiv = document.getElementById('app');
 

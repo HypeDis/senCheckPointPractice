@@ -22,6 +22,16 @@ const Profile = db.define('profile', {
   birthday: {
     type: Sequelize.DATE,
     allowNull: false,
+    get: function() {
+      const birthday = this.getDataValue('birthday');
+      console.log(birthday);
+
+      const month = birthday.getMonth();
+      console.log('month', month + 1);
+      const day = birthday.getDate();
+      const year = birthday.getFullYear();
+      return `${month + 1}/${day}/${year}`;
+    },
   },
 });
 

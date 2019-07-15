@@ -7,9 +7,10 @@ const { db, User, Profile } = require('./db');
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/', (req, res) => {
-  res.sendFile('index.html');
-});
+// app.get('/', (req, res) => {
+//   res.sendFile('index.html');
+// });
+
 // user routes
 app.get('/api/users', (req, res) => {
   User.findAll()
@@ -33,11 +34,30 @@ app.get('/api/profiles/:userId', (req, res) => {
     where: {
       userId: req.params.userId,
     },
+    include: [User],
   })
     .then(profile => {
       res.send(profile);
     })
     .catch(e => console.error(e));
+});
+
+app.put('/api/profiles/:profileId', (req, res, next) => {
+  const updateObj = req.body;
+  const profileId = req.params.profileId;
+
+  Profile.findByPk(profileId)
+    .then(profile => {
+      return profile.update(updateObj);
+    })
+    .then(() => {
+      res.send({ success: true });
+    })
+    .catch(e => console.error(e));
+});
+
+app.get('/*', (req, res, next) => {
+  res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 db.sync().then(() => {

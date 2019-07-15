@@ -1,3 +1,5 @@
-import Counter from './counter/index';
+import Users from './Users.js';
+import Profile from './Profile.js';
+import UpdateUser from './UpdateUser';
 
-export { Counter };
+export { Users, Profile, UpdateUser };
